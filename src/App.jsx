@@ -459,26 +459,15 @@ export default function App() {
                     const message = formData.get('message');
                     
                     try {
-                      // Envoyer via Resend API directement
-                      const response = await fetch('https://api.resend.com/emails', {
+                      // Envoyer via l'API backend
+                      const response = await fetch('/api/send-email', {
                         method: 'POST',
-                        headers: {
-                          'Content-Type': 'application/json',
-                          'Authorization': 'Bearer re_JvDxRLJXKEaGHhRxpJSKvEEgHDVQqPLKx'
-                        },
+                        headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
-                          from: 'noreply@paulchauviere.fr',
-                          to: 'paul.chauviere@kedgebs.com',
-                          replyTo: email,
-                          subject: `Nouveau message de contact: ${subject}`,
-                          html: `
-                            <h2>Nouveau message de contact</h2>
-                            <p><strong>Nom:</strong> ${name}</p>
-                            <p><strong>Email:</strong> ${email}</p>
-                            <p><strong>Sujet:</strong> ${subject}</p>
-                            <p><strong>Message:</strong></p>
-                            <p>${message.replace(/\n/g, '<br>')}</p>
-                          `
+                          name: name,
+                          email: email,
+                          subject: subject,
+                          message: message
                         })
                       });
                       
@@ -486,7 +475,8 @@ export default function App() {
                         alert('Merci pour votre message ! Je vous répondrai dès que possible.');
                         e.target.reset();
                       } else {
-                        alert('Erreur lors de l\'envoi. Veuillez réessayer.');
+                        const errorData = await response.json();
+                        alert('Erreur lors de l\'envoi: ' + (errorData.error || 'Veuillez réessayer.'));
                       }
                     } catch (error) {
                       console.error('Erreur:', error);
