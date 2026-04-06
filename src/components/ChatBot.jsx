@@ -92,7 +92,7 @@ export default function ChatBot() {
 
       {/* Chat Window */}
       {isOpen && (
-        <div className="fixed bottom-24 right-6 w-full sm:w-96 max-h-96 bg-card rounded-lg shadow-2xl flex flex-col z-50 border border-border">
+        <div className="fixed bottom-24 right-6 w-80 sm:w-80 max-h-96 bg-card rounded-lg shadow-2xl flex flex-col z-50 border border-border">
           {/* Header */}
           <div className="bg-primary text-primary-foreground p-4 rounded-t-lg">
             <h3 className="font-semibold text-base">🤖 Assistant IA</h3>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Menu, X, Download, Moon, Sun, Mail, ChevronDown } from "lucide-react";
+import { Menu, X, Download, Mail, ChevronDown } from "lucide-react";
 import { cvData } from "./data";
 import ChatBot from "./components/ChatBot";
 import "./App.css";
@@ -7,16 +7,6 @@ import "./App.css";
 export default function App() {
   const [activeSection, setActiveSection] = useState("home");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "light");
-
-  useEffect(() => {
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-    localStorage.setItem("theme", theme);
-  }, [theme]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -39,9 +29,7 @@ export default function App() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
-  };
+
 
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
@@ -94,13 +82,7 @@ export default function App() {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-4">
-            <button
-              onClick={toggleTheme}
-              className="p-2 hover:bg-secondary rounded-lg transition-colors text-foreground"
-              title="Basculer le thème"
-            >
-              {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
-            </button>
+
             <a
               href={cvData.cvPdfUrl}
               download="Paul_Chauviere_CV.pdf"
@@ -395,10 +377,9 @@ export default function App() {
             </div>
 
             {/* Additional Info */}
-            <div className="mt-12 bg-gradient-to-r from-primary/5 to-primary/10 border border-primary/20 rounded-lg p-4 sm:p-8 text-center animate-fade-in-up">
-              <p className="text-sm sm:text-base text-foreground/80">
-                Vous souhaitez en savoir plus sur mes projets ? N'hésitez pas à me contacter pour discuter
-                de mes réalisations et de comment je pourrais contribuer à vos projets.
+            <div className="bg-card border border-border rounded-lg p-6 sm:p-8 animate-fade-in-up hover:shadow-lg transition-shadow">
+              <p className="text-sm sm:text-base text-foreground">
+                💫 <span className="font-semibold">Vous souhaitez en savoir plus sur mes projets ?</span> N'hésitez pas à me contacter pour discuter de mes réalisations et de comment je pourrais contribuer à vos projets.
               </p>
             </div>
           </div>
