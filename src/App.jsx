@@ -450,12 +450,29 @@ export default function App() {
               {/* Contact Form */}
               <div className="animate-fade-in-up">
                 <form 
-                  action="https://formspree.io/f/xyzgdpvd"
-                  method="POST"
-                  onSubmit={(e) => {
-                    setTimeout(() => {
-                      alert("Merci pour votre message ! Je vous répondrai dès que possible.");
-                    }, 500);
+                  onSubmit={async (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(e.target);
+                    try {
+                      const response = await fetch('/api/send-email', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                          name: formData.get('name'),
+                          email: formData.get('email'),
+                          subject: formData.get('subject'),
+                          message: formData.get('message')
+                        })
+                      });
+                      if (response.ok) {
+                        alert('Merci pour votre message ! Je vous répondrai dès que possible.');
+                        e.target.reset();
+                      } else {
+                        alert('Erreur lors de l\'envoi. Veuillez réessayer.');
+                      }
+                    } catch (error) {
+                      alert('Erreur lors de l\'envoi. Veuillez réessayer.');
+                    }
                   }}
                   className="space-y-4"
                 >
