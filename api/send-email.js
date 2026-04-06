@@ -1,4 +1,6 @@
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -12,19 +14,10 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Créer un transporteur Nodemailer
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASSWORD
-      }
-    });
-
-    // Envoyer l'email
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
+    const result = await resend.emails.send({
+      from: 'noreply@paulchauviere.fr',
       to: 'paul.chauviere@kedgebs.com',
+      replyTo: email,
       subject: `Nouveau message de contact: ${subject}`,
       html: `
         <h2>Nouveau message de contact</h2>
@@ -35,6 +28,10 @@ export default async function handler(req, res) {
         <p>${message.replace(/\n/g, '<br>')}</p>
       `
     });
+
+    if (result.error) {
+      return res.status(500).json({ error: result.error.message });
+    }
 
     return res.status(200).json({ success: true });
   } catch (error) {
