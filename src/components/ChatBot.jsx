@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { MessageCircle, Send, X } from 'lucide-react';
 
 export default function ChatBot() {
@@ -6,7 +6,7 @@ export default function ChatBot() {
   const [messages, setMessages] = useState([
     {
       id: 1,
-      text: "Bonjour! Je suis l'assistant IA de Paul Chauvière. Posez-moi des questions sur son profil, ses expériences ou ses compétences!",
+      text: "Bonjour! 👋 Je suis l'assistant IA de Paul Chauvière. Posez-moi des questions sur son profil, ses expériences, ses compétences ou ses projets!",
       sender: 'bot',
       timestamp: new Date()
     }
@@ -84,7 +84,7 @@ export default function ChatBot() {
       {/* Chat Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 bg-cv-blue hover:bg-cv-dark-blue text-white rounded-full p-4 shadow-lg transition-all z-40"
+        className="fixed bottom-6 right-6 bg-primary hover:bg-primary/90 text-primary-foreground rounded-full p-4 shadow-lg hover:shadow-2xl transition-all z-40 animate-pulse"
         title="Ouvrir le chatbot"
       >
         {isOpen ? <X size={24} /> : <MessageCircle size={24} />}
@@ -92,11 +92,11 @@ export default function ChatBot() {
 
       {/* Chat Window */}
       {isOpen && (
-        <div className="fixed bottom-24 right-6 w-96 h-96 bg-white rounded-lg shadow-2xl flex flex-col z-50 border border-gray-200">
+        <div className="fixed bottom-24 right-6 w-full sm:w-96 max-h-96 bg-card rounded-lg shadow-2xl flex flex-col z-50 border border-border">
           {/* Header */}
-          <div className="bg-cv-blue text-white p-4 rounded-t-lg">
-            <h3 className="font-semibold">Assistant IA - Paul Chauvière</h3>
-            <p className="text-xs text-gray-200">Posez vos questions sur mon profil</p>
+          <div className="bg-primary text-primary-foreground p-4 rounded-t-lg">
+            <h3 className="font-semibold text-base">🤖 Assistant IA</h3>
+            <p className="text-xs text-primary-foreground/80">Posez vos questions sur Paul</p>
           </div>
 
           {/* Messages */}
@@ -109,8 +109,8 @@ export default function ChatBot() {
                 <div
                   className={`max-w-xs px-4 py-2 rounded-lg text-sm ${
                     msg.sender === 'user'
-                      ? 'bg-cv-blue text-white'
-                      : 'bg-gray-100 text-gray-800'
+                      ? 'bg-primary text-primary-foreground'
+                      : 'bg-secondary text-foreground'
                   }`}
                 >
                   {msg.text}
@@ -119,11 +119,11 @@ export default function ChatBot() {
             ))}
             {loading && (
               <div className="flex justify-start">
-                <div className="bg-gray-100 text-gray-800 px-4 py-2 rounded-lg text-sm">
+                <div className="bg-secondary text-foreground px-4 py-2 rounded-lg text-sm">
                   <div className="flex gap-2">
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-100"></div>
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-200"></div>
+                    <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce"></div>
+                    <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+                    <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
                   </div>
                 </div>
               </div>
@@ -132,19 +132,19 @@ export default function ChatBot() {
           </div>
 
           {/* Input */}
-          <form onSubmit={handleSendMessage} className="border-t p-4 flex gap-2">
+          <form onSubmit={handleSendMessage} className="border-t border-border p-4 flex gap-2 bg-card">
             <input
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Votre question..."
-              className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cv-blue"
+              className="flex-1 px-3 py-2 border border-border rounded-lg text-sm bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
               disabled={loading}
             />
             <button
               type="submit"
               disabled={loading || !input.trim()}
-              className="bg-cv-blue hover:bg-cv-dark-blue text-white p-2 rounded-lg transition-colors disabled:opacity-50"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground p-2 rounded-lg transition-colors disabled:opacity-50"
             >
               <Send size={18} />
             </button>
