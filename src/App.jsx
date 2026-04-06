@@ -453,17 +453,35 @@ export default function App() {
                   onSubmit={async (e) => {
                     e.preventDefault();
                     const formData = new FormData(e.target);
+                    const name = formData.get('name');
+                    const email = formData.get('email');
+                    const subject = formData.get('subject');
+                    const message = formData.get('message');
+                    
                     try {
-                      const response = await fetch('/api/send-email', {
+                      // Envoyer via Resend API directement
+                      const response = await fetch('https://api.resend.com/emails', {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                        headers: {
+                          'Content-Type': 'application/json',
+                          'Authorization': 'Bearer re_JvDxRLJXKEaGHhRxpJSKvEEgHDVQqPLKx'
+                        },
                         body: JSON.stringify({
-                          name: formData.get('name'),
-                          email: formData.get('email'),
-                          subject: formData.get('subject'),
-                          message: formData.get('message')
+                          from: 'noreply@paulchauviere.fr',
+                          to: 'paul.chauviere@kedgebs.com',
+                          replyTo: email,
+                          subject: `Nouveau message de contact: ${subject}`,
+                          html: `
+                            <h2>Nouveau message de contact</h2>
+                            <p><strong>Nom:</strong> ${name}</p>
+                            <p><strong>Email:</strong> ${email}</p>
+                            <p><strong>Sujet:</strong> ${subject}</p>
+                            <p><strong>Message:</strong></p>
+                            <p>${message.replace(/\n/g, '<br>')}</p>
+                          `
                         })
                       });
+                      
                       if (response.ok) {
                         alert('Merci pour votre message ! Je vous répondrai dès que possible.');
                         e.target.reset();
@@ -471,6 +489,7 @@ export default function App() {
                         alert('Erreur lors de l\'envoi. Veuillez réessayer.');
                       }
                     } catch (error) {
+                      console.error('Erreur:', error);
                       alert('Erreur lors de l\'envoi. Veuillez réessayer.');
                     }
                   }}
