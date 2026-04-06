@@ -214,7 +214,7 @@ export default function App() {
             </div>
 
             {/* Chatbot CTA */}
-            <div className="mt-12 p-6 bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/20 rounded-lg max-w-2xl mx-auto animate-fade-in-up">
+            <div className="mt-12 p-6 bg-card border border-border rounded-lg max-w-2xl mx-auto animate-fade-in-up hover:shadow-lg transition-shadow">
               <p className="text-sm sm:text-base text-foreground">
                 💬 <span className="font-semibold">Vous avez des questions ?</span> Testez mon assistant IA en bas à droite pour en savoir plus sur mon profil !
               </p>
@@ -331,14 +331,16 @@ export default function App() {
             </div>
 
             {/* Interests */}
-            <div className="bg-gradient-to-r from-primary/5 to-primary/10 border border-primary/20 rounded-lg p-4 sm:p-8 animate-fade-in-up">
+            <div className="bg-card border border-border rounded-lg p-4 sm:p-8 animate-fade-in-up">
               <h3 className="text-2xl sm:text-3xl font-bold mb-6 text-foreground">Centres d'Intérêt</h3>
-              <div className="grid md:grid-cols-2 gap-4">
+              <div className="flex flex-wrap gap-3">
                 {cvData.interests.map((interest, idx) => (
-                  <div key={idx} className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-primary rounded-full flex-shrink-0" />
-                    <span className="text-sm sm:text-base text-foreground/80">{interest}</span>
-                  </div>
+                  <span
+                    key={idx}
+                    className="px-3 sm:px-4 py-2 bg-primary/10 text-primary text-xs sm:text-sm rounded-lg hover:bg-primary/20 transition-colors border border-primary/20"
+                  >
+                    {interest}
+                  </span>
                 ))}
               </div>
             </div>
