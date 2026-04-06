@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import Groq from 'groq-sdk';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -11,7 +11,7 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Message is required' });
   }
 
-  const apiKey = process.env.GEMINI_API_KEY;
+  const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) {
     return res.status(500).json({ 
       error: 'API key not configured',
@@ -20,9 +20,8 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Initialize Google Generative AI
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    // Initialize Groq client
+    const client = new Groq({ apiKey });
 
     // Context about Paul for the AI
     const paulContext = `Tu es l'assistant IA de Paul Chauvière, un jeune professionnel spécialisé en Marketing Digital et Business Development.
@@ -38,58 +37,35 @@ Informations sur Paul:
 
 Réponds de manière professionnelle et amicale aux questions sur le profil, les expériences et les compétences de Paul.`;
 
-    // Build conversation history
+    // Build conversation history for Groq
     const conversationHistory = history.map(msg => ({
-      role: msg.role === 'user' ? 'user' : 'model',
-      parts: [{ text: msg.content }]
+      role: msg.role === 'user' ? 'user' : 'assistant',
+      content: msg.content
     }));
 
     // Add the new user message
     conversationHistory.push({
       role: 'user',
-      parts: [{ text: message }]
+      content: message
     });
 
-    // Build the full prompt with context
-    const fullPrompt = `${paulContext}\n\nQuestion: ${message}`;
-
-    // Generate content using the SDK
-    const result = await model.generateContent({
-      contents: [
+    // Call Groq API with conversation history
+    const response = await client.chat.completions.create({
+      messages: [
         {
-          role: 'user',
-          parts: [{ text: fullPrompt }]
+          role: 'system',
+          content: paulContext
         },
-        ...conversationHistory.slice(0, -1) // Add previous messages for context
+        ...conversationHistory
       ],
-      generationConfig: {
-        temperature: 0.7,
-        topK: 40,
-        topP: 0.95,
-        maxOutputTokens: 500,
-      },
-      safetySettings: [
-        {
-          category: 'HARM_CATEGORY_HARASSMENT',
-          threshold: 'BLOCK_MEDIUM_AND_ABOVE',
-        },
-        {
-          category: 'HARM_CATEGORY_HATE_SPEECH',
-          threshold: 'BLOCK_MEDIUM_AND_ABOVE',
-        },
-        {
-          category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
-          threshold: 'BLOCK_MEDIUM_AND_ABOVE',
-        },
-        {
-          category: 'HARM_CATEGORY_DANGEROUS_CONTENT',
-          threshold: 'BLOCK_MEDIUM_AND_ABOVE',
-        },
-      ],
+      model: 'llama-3.3-70b-versatile',
+      temperature: 0.7,
+      max_tokens: 1024,
+      top_p: 0.95,
     });
 
     // Extract the response text
-    const botResponse = result.response.text() || 
+    const botResponse = response.choices[0]?.message?.content || 
       "Désolé, je n'ai pas pu générer une réponse. Veuillez réessayer.";
 
     return res.status(200).json({ response: botResponse });
