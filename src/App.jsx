@@ -450,10 +450,12 @@ export default function App() {
               {/* Contact Form */}
               <div className="animate-fade-in-up">
                 <form 
+                  action="https://formspree.io/f/xyzgdpvd"
+                  method="POST"
                   onSubmit={(e) => {
-                    e.preventDefault();
-                    alert("Merci pour votre message ! Je vous répondrai dès que possible.");
-                    e.target.reset();
+                    setTimeout(() => {
+                      alert("Merci pour votre message ! Je vous répondrai dès que possible.");
+                    }, 500);
                   }}
                   className="space-y-4"
                 >
