@@ -1,5 +1,39 @@
 import Groq from 'groq-sdk';
 
+// Function to clean Markdown formatting for better readability
+function cleanMarkdown(text) {
+  // Remove bold formatting (**text** -> text)
+  text = text.replace(/\*\*(.+?)\*\*/g, '$1');
+  
+  // Remove italic formatting (*text* -> text)
+  text = text.replace(/\*(.+?)\*/g, '$1');
+  
+  // Remove markdown headers (# -> empty, ## -> empty, etc)
+  text = text.replace(/^#+\s+/gm, '');
+  
+  // Convert markdown lists to simple text with bullets
+  text = text.replace(/^\s*[-*+]\s+/gm, '• ');
+  
+  // Remove code blocks formatting (```code``` -> code)
+  text = text.replace(/```[\s\S]*?```/g, (match) => {
+    return match.replace(/```/g, '').trim();
+  });
+  
+  // Remove inline code formatting (`code` -> code)
+  text = text.replace(/`([^`]+)`/g, '$1');
+  
+  // Clean up multiple spaces
+  text = text.replace(/  +/g, ' ');
+  
+  // Clean up multiple newlines (keep max 2)
+  text = text.replace(/\n{3,}/g, '\n\n');
+  
+  // Trim whitespace
+  text = text.trim();
+  
+  return text;
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -35,7 +69,7 @@ Informations sur Paul:
 - Intérêts: Sport, Web3, Investissements, Apprentissage
 - Disponible pour: CDI, CDD, VIE
 
-Réponds de manière professionnelle et amicale aux questions sur le profil, les expériences et les compétences de Paul.`;
+Réponds de manière professionnelle et amicale aux questions sur le profil, les expériences et les compétences de Paul. Réponds de manière concise et lisible, sans utiliser de formatage Markdown complexe.`;
 
     // Build conversation history for Groq
     const conversationHistory = history.map(msg => ({
@@ -65,8 +99,11 @@ Réponds de manière professionnelle et amicale aux questions sur le profil, les
     });
 
     // Extract the response text
-    const botResponse = response.choices[0]?.message?.content || 
+    let botResponse = response.choices[0]?.message?.content || 
       "Désolé, je n'ai pas pu générer une réponse. Veuillez réessayer.";
+
+    // Clean up Markdown formatting for better readability
+    botResponse = cleanMarkdown(botResponse);
 
     return res.status(200).json({ response: botResponse });
   } catch (error) {
