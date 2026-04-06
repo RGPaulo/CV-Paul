@@ -48,7 +48,7 @@ export default function App() {
   ];
 
   return (
-    <div className={`min-h-screen ${theme === "dark" ? "dark" : ""}`}>
+    <div className="min-h-screen">
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 bg-background/95 backdrop-blur-md border-b border-border z-50">
         <div className="container max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
@@ -97,13 +97,6 @@ export default function App() {
 
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center gap-2">
-            <button
-              onClick={toggleTheme}
-              className="p-2 hover:bg-secondary rounded-lg transition-colors text-foreground"
-              title="Basculer le thème"
-            >
-              {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
-            </button>
             <button
               className="p-2 hover:bg-secondary rounded-lg transition-colors"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
