@@ -465,7 +465,7 @@ export default function App() {
                     <label className="block text-sm font-medium text-foreground mb-2">Nom</label>
                     <input
                       type="text"
-                      name="entry.123456789"
+                      name="entry.1500670322"
                       required
                       className="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                       placeholder="Votre nom"
@@ -475,7 +475,7 @@ export default function App() {
                     <label className="block text-sm font-medium text-foreground mb-2">Email</label>
                     <input
                       type="email"
-                      name="entry.987654321"
+                      name="entry.1619327115"
                       required
                       className="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                       placeholder="Votre email"
@@ -485,7 +485,7 @@ export default function App() {
                     <label className="block text-sm font-medium text-foreground mb-2">Sujet</label>
                     <input
                       type="text"
-                      name="entry.555555555"
+                      name="entry.91227489"
                       required
                       className="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                       placeholder="Sujet de votre message"
@@ -494,7 +494,7 @@ export default function App() {
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">Message</label>
                     <textarea
-                      name="entry.666666666"
+                      name="entry.1401387924"
                       required
                       rows="4"
                       className="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary resize-none"
