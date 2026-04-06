@@ -450,38 +450,14 @@ export default function App() {
               {/* Contact Form */}
               <div className="animate-fade-in-up">
                 <form 
-                  onSubmit={async (e) => {
-                    e.preventDefault();
-                    const formData = new FormData(e.target);
-                    const name = formData.get('name');
-                    const email = formData.get('email');
-                    const subject = formData.get('subject');
-                    const message = formData.get('message');
-                    
-                    try {
-                      // Envoyer via l'API backend
-                      const response = await fetch('/api/send-email', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                          name: name,
-                          email: email,
-                          subject: subject,
-                          message: message
-                        })
-                      });
-                      
-                      if (response.ok) {
-                        alert('Merci pour votre message ! Je vous répondrai dès que possible.');
-                        e.target.reset();
-                      } else {
-                        const errorData = await response.json();
-                        alert('Erreur lors de l\'envoi: ' + (errorData.error || 'Veuillez réessayer.'));
-                      }
-                    } catch (error) {
-                      console.error('Erreur:', error);
-                      alert('Erreur lors de l\'envoi. Veuillez réessayer.');
-                    }
+                  action="https://docs.google.com/forms/d/e/1FAIpQLScFREM94Yf5iWHCDlP8Xpu9BWqyHjMPgLDEHjkOQrXe3_givQ/formResponse"
+                  method="POST"
+                  target="_blank"
+                  onSubmit={(e) => {
+                    setTimeout(() => {
+                      alert('Merci pour votre message ! Je vous répondrai dès que possible.');
+                      e.target.reset();
+                    }, 500);
                   }}
                   className="space-y-4"
                 >
@@ -489,7 +465,7 @@ export default function App() {
                     <label className="block text-sm font-medium text-foreground mb-2">Nom</label>
                     <input
                       type="text"
-                      name="name"
+                      name="entry.123456789"
                       required
                       className="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                       placeholder="Votre nom"
@@ -499,7 +475,7 @@ export default function App() {
                     <label className="block text-sm font-medium text-foreground mb-2">Email</label>
                     <input
                       type="email"
-                      name="email"
+                      name="entry.987654321"
                       required
                       className="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                       placeholder="Votre email"
@@ -509,7 +485,7 @@ export default function App() {
                     <label className="block text-sm font-medium text-foreground mb-2">Sujet</label>
                     <input
                       type="text"
-                      name="subject"
+                      name="entry.555555555"
                       required
                       className="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                       placeholder="Sujet de votre message"
@@ -518,7 +494,7 @@ export default function App() {
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">Message</label>
                     <textarea
-                      name="message"
+                      name="entry.666666666"
                       required
                       rows="4"
                       className="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary resize-none"
